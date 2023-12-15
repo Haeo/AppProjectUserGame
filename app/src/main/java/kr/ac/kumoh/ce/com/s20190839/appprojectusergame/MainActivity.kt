@@ -65,67 +65,8 @@ fun MainScreen(viewModel: GameViewModel) {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            GameList(gameList)
+            GameApp(gameList)
         }
     }
 }
 
-@Composable
-fun GameList(list: List<Game>) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp)
-    ) {
-        itemsIndexed(list) { index, game ->
-            GameItem(index, game)
-        }
-    }
-}
-
-@Composable
-fun GameItem(index: Int, game: Game) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Card(
-        modifier = Modifier.clickable { expanded = !expanded },
-        elevation = CardDefaults.cardElevation(8.dp)
-    ){
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                //.background(Color(255, 210, 210))
-                .padding(8.dp)
-        ) {
-            AsyncImage(
-                model = "https://picsum.photos/300/300?random=$index",
-                contentDescription = "게임 이미지",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(percent = 10)),
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                TextTitle(game.title)
-                TextDeveloper(game.developer)
-            }
-        }
-        AnimatedVisibility(visible = expanded) {
-            game.description?.let { Text(it) }
-        }
-    }
-}
-
-@Composable
-fun TextTitle(title: String) {
-    Text(title, fontSize = 30.sp)
-}
-
-@Composable
-fun TextDeveloper(developer: String) {
-    Text(developer, fontSize = 20.sp)
-}
