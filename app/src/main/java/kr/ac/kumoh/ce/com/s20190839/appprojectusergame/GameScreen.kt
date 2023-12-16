@@ -64,7 +64,7 @@ fun GameApp(gameList: List<Game>) {
         startDestination = GameScreen.List.name,
     ) {
         composable(route = GameScreen.List.name) {
-            GameList(gameList) {
+            GameList(gameList) {    // 게임 리스트 출력
                 navController.navigate(it)
             }
         }
@@ -80,6 +80,7 @@ fun GameApp(gameList: List<Game>) {
     }
 }
 
+// 게임 리스트 전체 출력
 @Composable
 fun GameList(list: List<Game>, onNavigateToDetail: (String) -> Unit) {
     LazyColumn(
@@ -92,11 +93,12 @@ fun GameList(list: List<Game>, onNavigateToDetail: (String) -> Unit) {
     }
 }
 
+// 리스트 중 각각의 데이터에 대한 출력
 @Composable
 fun GameItem(index: Int,
              game: Game,
              onNavigateToDetail: (String) -> Unit) {
-    Card(
+    Card(   // 카드 스타일
         modifier = Modifier.clickable {
             onNavigateToDetail(GameScreen.Detail.name + "/$index")
         },
@@ -109,7 +111,7 @@ fun GameItem(index: Int,
                 .padding(8.dp)
         ) {
             AsyncImage(
-                model = "https://picsum.photos/300/300?random=${game.id}",
+                model = "${game.game_img}",
                 contentDescription = "게임 이미지",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -128,16 +130,20 @@ fun GameItem(index: Int,
     }
 }
 
+// 게임명 출력
 @Composable
 fun TextTitle(title: String) {
     Text(title, fontSize = 30.sp)
 }
 
+// 게임 개발사 출력
 @Composable
 fun TextDeveloper(developer: String) {
     Text(developer, fontSize = 20.sp)
 }
 
+// 게임 상세 정보 출력
+// 장르 - 게임명 - 게임 이미지 - [개발사 이미지 + 개발사] - 소개 글 - 유튜브 링크
 @Composable
 fun GameDetail(game: Game) {
     val context = LocalContext.current
@@ -167,7 +173,7 @@ fun GameDetail(game: Game) {
         Spacer(modifier = Modifier.height(16.dp))
 
         AsyncImage(
-            model = "https://picsum.photos/300/300?random=${game.id}",
+            model = "${game.game_img}",
             contentDescription = "게임 이미지",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -178,11 +184,11 @@ fun GameDetail(game: Game) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = "https://i.pravatar.cc/100?u=${game.developer}",
+                model = "${game.dev_img}",
                 contentDescription = "게임 개발사 이미지",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(60.dp)
                     .clip(CircleShape)
             )
             Text(game.developer, fontSize = 30.sp)
